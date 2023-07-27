@@ -12,7 +12,7 @@ def CadastrarEntrada():
     categoria = input("Categoria: ")
     data = input("Data: ")
 
-    cursor.execute(f'INSERT INTO "main"."Entradas" ("nome", "valor", "categoria", "data") VALUES ("{nome}", "1", "sim", "11/11/2001");')
+    cursor.execute(f'INSERT INTO "main"."Entradas" ("nome", "valor", "categoria", "data") VALUES ("{nome}", "{valor}", "{categoria}", "{data}");')
     con.commit()
 
 def CadastrarSaida():
