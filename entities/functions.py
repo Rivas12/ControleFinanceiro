@@ -1,8 +1,25 @@
+import os 
+
 def CadastrarEntrada():
-    print("função entrada")
+    os.system('cls' if os.name == 'nt' else 'clear') # limpar terminal
+    print("Preencha os dados da nova entrada: \n")
+    input("Nome: ")
+    input("Valor: ")
+    input("Categoria: ")
+    input("Data: ")
 
 def CadastrarSaida():
-    print("função saída")
+    os.system('cls' if os.name == 'nt' else 'clear') # limpar terminal
+    print("Preencha os dados da nova saída: \n")
+    input("Nome: ")
+    input("Valor: ")
+    input("Categoria: ")
+    input("Data: ")
 
 def CadastrarInvestimento():
-    print("função Investimento")
+    os.system('cls' if os.name == 'nt' else 'clear') # limpar terminal
+    print("Preencha os dados do novo investimento: \n")
+    input("Nome: ")
+    input("Valor: ")
+    input("Categoria: ")
+    input("Data: ")
