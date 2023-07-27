@@ -1,4 +1,7 @@
 import os 
+import sqlite3
+
+con = sqlite3.connect("db.db") #conexão com o banco de dados
 
 def CadastrarEntrada():
     os.system('cls' if os.name == 'nt' else 'clear') # limpar terminal
