@@ -2,6 +2,7 @@ import os
 import sqlite3
 
 con = sqlite3.connect("db.db") #conexão com o banco de dados
+cursor = con.cursor()
 
 def CadastrarEntrada():
     os.system('cls' if os.name == 'nt' else 'clear') # limpar terminal
@@ -10,6 +11,9 @@ def CadastrarEntrada():
     valor = input("Valor: ")
     categoria = input("Categoria: ")
     data = input("Data: ")
+
+    cursor.execute(f'INSERT INTO "main"."Entradas" ("nome", "valor", "categoria", "data") VALUES ("{nome}", "1", "sim", "11/11/2001");')
+    con.commit()
 
 def CadastrarSaida():
     os.system('cls' if os.name == 'nt' else 'clear') # limpar terminal
