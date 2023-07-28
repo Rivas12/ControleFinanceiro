@@ -36,6 +36,7 @@ def CadastrarSaida():
     LimparTerminal()
 
 def CadastrarInvestimento():
+    
     LimparTerminal()
     #capturar os dados do investimento:
     print("Preencha os dados do novo investimento: \n")
@@ -48,4 +49,16 @@ def CadastrarInvestimento():
 
     cursor.execute(f'INSERT INTO "main"."Investimentos" ("nome", "valor", "tipo", "quantidade", "data") VALUES ("{nome}", "{valor}", "{tipo}", "{qtd}", "{data}");')
     con.commit() #salvar no banco de dados
+    LimparTerminal()
+
+def GerarRelatorio():
+    LimparTerminal()
+    print("Mostrando dados: \n")
+    cursor.execute("SELECT SUM(valor) FROM Entradas")
+    print(f"Entrada: R${cursor.fetchall()[0][0]}")
+    cursor.execute("SELECT SUM(valor) FROM Saidas")
+    print(f"Saídas: R${cursor.fetchall()[0][0]}")
+    cursor.execute("SELECT SUM(valor) FROM Investimentos")
+    print(f"Investimentos: R${cursor.fetchall()[0][0]}")
+    input("\n\nprecione alguma tecla para sair")
     LimparTerminal()

@@ -9,7 +9,8 @@ while not stop:
  1: Criar entrada
  2: Criar saída
  3: Criar investimento \n
- 4: sair
+ 4: Relatorio \n
+ 5: sair
  → ''')
     if menu == "1":
         CadastrarEntrada()
@@ -18,4 +19,6 @@ while not stop:
     if menu == "3":
         CadastrarInvestimento()
     if menu == "4":
+        GerarRelatorio()
+    if menu == "5":
         break
