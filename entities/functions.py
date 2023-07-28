@@ -26,6 +26,8 @@ def CadastrarSaida():
     valor = input("Valor: ")
     categoria = input("Categoria: ")
     data = input("Data: ")
+    cursor.execute(f'INSERT INTO "main"."Saidas" ("nome", "valor", "categoria", "data") VALUES ("{nome}", "{valor}", "{categoria}", "{data}");')
+    con.commit()
     LimparTerminal()
 
 def CadastrarInvestimento():
