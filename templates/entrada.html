@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous" />
+    <style>
+      footer{
+        text-align: center;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #111;
+        height: auto;
+        width: 100vw;
+        padding-top:10px;
+        color: #fff;
+        }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-success">
+      <div class="container-fluid justify-content-center">
+        <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse flex-grow-0" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#" style="color: white;">Entradas</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Saída</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Investimentos</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Ações </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <button type="button" class="btn btn-link dropdown-item" data-bs-toggle="modal" data-bs-target="#ModalEntrada">Criar entrada</button>
+                </li>
+                <li>
+                  <button type="button" class="btn btn-link dropdown-item" data-bs-toggle="modal" data-bs-target="#ModalSaida">Criar saida</button>
+                </li>
+                <li>
+                  <button type="button" class="btn btn-link dropdown-item" data-bs-toggle="modal" data-bs-target="#ModalInvestimentos">Criar investimento</button>
+                </li>
+                <li class="dropdown-divider"></li>
+                <li>
+                  <a class="dropdown-item" href="#">Relatorio</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Modal Entrada -->
+    <div class="modal fade" id="ModalEntrada" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Nova entrada</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form class="row g-3">
+              <div class="col-md-6">
+                <label for="inputNomeModalEntrada" class="form-label">nome</label>
+                <input type="email" class="form-control" id="inputNomeModalEntrada">
+              </div>
+              <div class="col-md-6">
+                <label for="inputValorModalEntrada" class="form-label">valor</label>
+                <input type="number" class="form-control" id="inputValorModalEntrada">
+              </div>
+              <div class="col-6">
+                <label for="inputDataModalEntrada" class="form-label">data</label>
+                <input type="date" class="form-control" id="inputDataModalEntrada">
+              </div>
+              <div class="col-md-6">
+                <label for="inputState" class="form-label">categoria</label>
+                <select id="inputState" class="form-select">
+                  <option value="">Salario</option>
+                  <option value="">Venda de produto</option>
+                  <option value="">Investimentos</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label for="inputDescricaoModalEntrada" class="form-label">descrição</label>
+                <input type="text" class="form-control" id="inputDescricaoModalEntrada" placeholder="">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            <button type="button" class="btn btn-primary">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Saída -->
+    <div class="modal fade" id="ModalSaida" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Nova saída</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form class="row g-3">
+              <div class="col-md-6">
+                <label for="inputNomeModalSaida" class="form-label">nome</label>
+                <input type="email" class="form-control" id="inputNomeModalSaida">
+              </div>
+              <div class="col-md-6">
+                <label for="inputValorModalSaida" class="form-label">valor</label>
+                <input type="number" class="form-control" id="inputValorModalSaida">
+              </div>
+              <div class="col-12">
+                <label for="inputLocalModalSaida" class="form-label">local</label>
+                <input type="text" class="form-control" id="inputLocalModalSaida">
+              </div>
+              <div class="col-6">
+                <label for="inputDataModalSaida" class="form-label">data</label>
+                <input type="date" class="form-control" id="inputDataModalSaida">
+              </div>
+              <div class="col-md-6">
+                <label for="inputCategoriaModalSaida" class="form-label">categoria</label>
+                <select id="inputCategoriaModalSaida" class="form-select">
+                  <option value="">Alimentação</option>
+                  <option value="">aluguel</option>
+                  <option value="">Transporte</option>
+                  <option value="">Lazer e entretenimento</option>
+                  <option value="">Educação</option>
+                  <option value="">Vestuário e acessórios</option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            <button type="button" class="btn btn-primary">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Investimentos -->
+    <div class="modal fade" id="ModalInvestimentos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Nova investimento</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form class="row g-3">
+              <div class="col-md-6">
+                <label for="inputNomeModalInvest" class="form-label">nome</label>
+                <input type="email" class="form-control" id="inputNomeModalInvest">
+              </div>
+              <div class="col-md-6">
+                <label for="inputValorModalInvest" class="form-label">valor</label>
+                <input type="number" class="form-control" id="inputValorModalInvest">
+              </div>
+              <div class="col-6">
+                <label for="inputDataModalInvest" class="form-label">data</label>
+                <input type="date" class="form-control" id="inputDataModalInvest">
+              </div>
+              <div class="col-md-6">
+                <label for="inputCategoriaModalInvest" class="form-label">tipo</label>
+                <select id="inputCategoriaModalInvest" class="form-select">
+                  <option value="">Tesouro direto</option>
+                  <option value="">Criptomoeda</option>
+                  <option value="">Ações</option>
+                  <option value="">Fundos imobiliarios</option>
+                  <option value="">Poupança</option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            <button type="button" class="btn btn-primary">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<footer>
+  <a href="https://rivaldosilveira.com.br">RivaldoSilveira©</a>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/dbfe581b9a.js" crossorigin="anonymous"></script>
+  </body>
+</html>
