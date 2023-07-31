@@ -67,36 +67,36 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form class="row g-3">
+            <form class="row g-3" method="POST" action="http://localhost:5000/cadastrar">
               <div class="col-md-6">
                 <label for="inputNomeModalEntrada" class="form-label">nome</label>
-                <input type="email" class="form-control" id="inputNomeModalEntrada">
+                <input type="text" class="form-control" id="inputNomeModalEntrada" name="nome">
               </div>
               <div class="col-md-6">
                 <label for="inputValorModalEntrada" class="form-label">valor</label>
-                <input type="number" class="form-control" id="inputValorModalEntrada">
+                <input type="number" class="form-control" id="inputValorModalEntrada" name="valor">
               </div>
               <div class="col-6">
                 <label for="inputDataModalEntrada" class="form-label">data</label>
-                <input type="date" class="form-control" id="inputDataModalEntrada">
+                <input type="date" class="form-control" id="inputDataModalEntrada" name="data">
               </div>
               <div class="col-md-6">
                 <label for="inputState" class="form-label">categoria</label>
-                <select id="inputState" class="form-select">
-                  <option value="">Salario</option>
-                  <option value="">Venda de produto</option>
-                  <option value="">Investimentos</option>
+                <select id="inputState" class="form-select" name="categoria">
+                  <option value="salario">Salario</option>
+                  <option value="venda de produto">Venda de produto</option>
+                  <option value="investimentos">Investimentos</option>
                 </select>
               </div>
               <div class="col-12">
                 <label for="inputDescricaoModalEntrada" class="form-label">descrição</label>
-                <input type="text" class="form-control" id="inputDescricaoModalEntrada" placeholder="">
+                <input type="text" class="form-control" id="inputDescricaoModalEntrada" placeholder="" name="descricao">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" class="btn btn-primary">Salvar</button>
               </div>
             </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-            <button type="button" class="btn btn-primary">Salvar</button>
           </div>
         </div>
       </div>
