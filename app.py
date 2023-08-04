@@ -26,6 +26,10 @@ def investimentos():
     data = cursor.fetchall()
     return render_template('index.html', data = data, page = "investimento")
 
+@app.route('/relatorio')
+def relatorio():
+    return render_template('relatorio.html', page = "relatorio")
+
 @app.route('/cadastrar/entrada', methods = ['POST'])
 def cadastrarEntrada():
     cursor.execute(f'INSERT INTO "main"."Entradas" ("nome", "valor", "categoria", "descricao", "data") VALUES ("{request.form["nome"]}", "{request.form["valor"]}", "{request.form["categoria"]}", "{request.form["descricao"]}", "{request.form["data"]}");')
