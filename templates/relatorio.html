@@ -5,5 +5,62 @@
     }
 {% endblock %}
 {% block content %}
-uuuuuu
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <div style="width: 40%; background: white; margin: 10px 0 0 10px;">
+    <canvas id="myChart"></canvas>
+  </div>
+  
+  
+  <script>
+    const ctx = document.getElementById('myChart');
+  
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Entradas', 'Saídas', 'Investimentos'],
+        datasets: [{
+          label: 'Total em R$',
+          data: [120, 19, 30],
+          backgroundColor: ["green", "red", "yellow"],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
+
+  <div style="width: 40%; background: white; margin: 10px 0 0 10px;">
+    <canvas id="myChart2"></canvas>
+  </div>
+  
+  
+  <script>
+    const ctx2 = document.getElementById('myChart2');
+  
+    new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: ['Entradas', 'Saídas', 'Investimentos'],
+        datasets: [{
+          label: 'Total em R$',
+          data: [120, 19, 30],
+          backgroundColor: ["green", "red", "yellow"],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
 {% endblock %}

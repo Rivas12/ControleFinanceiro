@@ -7,6 +7,9 @@ cursor = con.cursor()
 
 app = Flask(__name__)
 
+@app.route('/')
+def home():
+    return redirect("http://localhost:5000/entradas")
 
 @app.route('/entradas')
 def entrada():
