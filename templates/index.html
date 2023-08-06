@@ -7,9 +7,9 @@
 {% block content %}
 <div class="container pt-5">
     <div class="row">
-        <table class="table table-striped">
+        <table class="table">
             <thead>
-            <tr  class="table-dark">
+            <tr class="table-dark">
                 <th scope="col">ID</th>
                 <th scope="col">Nome</th>
                 <th scope="col">Valor</th>
@@ -21,16 +21,23 @@
             </thead>
             <tbody>
             {% for i in data %}
-                <tr>
-                    <th scope="row">{{ i[0] }}</th>
+                <tr {% if i[2] == "entrada": %}
+                        class="table-success"
+                    {% elif i[2] == "saida": %}
+                        class="table-danger"
+                    {% elif i[2] == "investimento": %}
+                        class="table-warning"
+                    {% endif %}
+                         >
+                    <td>{{ i[0] }}</td>
                     <td>{{ i[1] }}</td>
-                    <td>R${{ i[2] }}</td>
-                    <td>{{ i[3] }}</td>
+                    <td>R${{ i[3] }}</td>
                     <td>{{ i[4] }}</td>
                     <td>{{ i[5] }}</td>
+                    <td>{{ i[6] }}</td>
                     <td>
                         <a href=""><i class="fa-regular fa-pen-to-square"></i></a>
-                        <a href=""><i class="fa-solid fa-trash"></i></a>
+                        <a href="http://localhost:5000/deletar?id={{ i[0] }}"><i class="fa-solid fa-trash"></i></a>
                         <a href=""><i class="fa-solid fa-circle-info"></i></a>
                       </td>
                 </tr>
