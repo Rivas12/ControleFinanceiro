@@ -6,7 +6,8 @@
 {% endblock %}
 {% block content %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <div style="width: 40%; background: white; margin: 10px 0 0 10px;">
+<div style="display: flex; justify-content: center;">
+  <div style="width: 49%; background: white; margin: 10px 0 1px 10px;">
     <canvas id="myChart"></canvas>
   </div>
   
@@ -34,8 +35,7 @@
       }
     });
   </script>
-
-  <div style="width: 40%; background: white; margin: 10px 0 0 10px;">
+  <div style="width: 49%; background: white; margin: 10px 10px 0 1px;">
     <canvas id="myChart2"></canvas>
   </div>
   
@@ -49,7 +49,7 @@
         labels: ['Entradas', 'Saídas', 'Investimentos'],
         datasets: [{
           label: 'Total em R$',
-          data: [120, 19, 30],
+          data: [120, 19, 300],
           backgroundColor: ["green", "red", "yellow"],
           borderWidth: 1
         }]
@@ -63,4 +63,5 @@
       }
     });
   </script>
+</div>
 {% endblock %}
