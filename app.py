@@ -63,5 +63,16 @@ def deletar():
     con.commit()
     return redirect("http://localhost:5000/movimentacoes")
 
+@app.route('/editar', methods = ['POST', 'GET'])
+def editar():
+    if request.method == 'POST':
+        cursor.execute(f'UPDATE Movimentacoes SET nome = "{request.form["nome"]}", valor = "{request.form["valor"]}" , categoria = "{request.form["categoria"]}", descricao = "{request.form["descricao"]}", data = "{request.form["data"]}" WHERE id == {request.args["id"]};')
+        data = cursor.fetchall()
+        return redirect("http://localhost:5000/movimentacoes")
+    else:
+        cursor.execute(f'SELECT * FROM Movimentacoes WHERE id == {request.args["id"]}')
+        data = cursor.fetchall()
+        return render_template('editar.html', data = data)
+
 if __name__ == "__main__":
     app.run(debug=True)

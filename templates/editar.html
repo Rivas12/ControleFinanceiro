@@ -1,0 +1,39 @@
+{% extends 'templatebase.html' %}
+
+{% block content %}
+<div class="row col-6 mt-4 ms-4">
+    <form class="bg-light p-2" method="POST">
+        <h2>Editar linha: {{ data[0][0] }}</h2>
+        <div class="row">
+            <div class="col">
+                <label for="nome" class="form-label">Nome</label>
+                <input type="text" class="form-control" value="{{ data[0][1] }}" id="nome" name="nome">
+            </div>
+            <div class="col">
+                <label for="valor" class="form-label">valor</label>
+                <input type="number" class="form-control" value="{{ data[0][3] }}" id="valor" name="valor">
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col">
+                <label for="data" class="form-label">Data</label>
+                <input type="date" class="form-control" value="{{ data[0][6] }}" id="data" name="data">
+            </div>
+            <div class="col">
+                <label for="categoria" class="form-label">Categoria</label>
+                <input type="text" class="form-control" value="{{ data[0][4] }}" id="categoria" name="categoria">
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col">
+                <label for="descricao" class="form-label">Descrição</label>
+                <textarea class="form-control" id="descricao" name="descricao">{{ data[0][5] }}</textarea>
+            </div>
+        </div>
+        <div class="mt-3">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
