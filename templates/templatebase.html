@@ -22,6 +22,7 @@
         {% block pageactive %}
         {% endblock %}
     </style>
+    <title>{% block title%}{% endblock %}</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg bg-success">
@@ -202,6 +203,39 @@
                 <button type="submit" class="btn btn-primary">Salvar</button>
               </div>
             </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal Info -->
+    <script>
+      function test(id, nome, tipo, valor, categoria, descricao, data){
+        document.getElementById("id-info").innerHTML = "Id: " + id
+        document.getElementById("nome-info").innerHTML = "Nome: " + nome
+        document.getElementById("valor-info").innerHTML = "Valor: " + valor
+        document.getElementById("categoria-info").innerHTML = "Categoria: " + categoria
+        document.getElementById("descricao-info").innerHTML = "Descrição: " + descricao
+        document.getElementById("data-info").innerHTML = "Data: " + data
+      }
+    </script>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Informações</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="modal-body">
+            <p id="id-info"></p>
+            <p id="nome-info"></p>
+            <p id="valor-info"></p>
+            <p id="categoria-info"></p>
+            <p id="descricao-info"></p>
+            <p id="data-info"></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>

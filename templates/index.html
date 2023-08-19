@@ -1,10 +1,13 @@
 {% extends 'templatebase.html' %}
+{% block title%}{{page}}{% endblock %}
 {% block pageactive %}
     #link-nav-{{page}}{
         color: white !important;
     }
 {% endblock %}
 {% block content %}
+
+</div>
 <div class="container pt-5">
     <div class="row">
         <table class="table">
@@ -33,12 +36,12 @@
                     <td>{{ i[1] }}</td>
                     <td>R${{ i[3] }}</td>
                     <td>{{ i[4] }}</td>
-                    <td>{{ i[5] }}</td>
+                    <td id="table-desc">{{ i[5] }}</td>
                     <td>{{ i[6] }}</td>
                     <td>
                         <a href="http://localhost:5000/editar?id={{ i[0] }}"><i class="fa-regular fa-pen-to-square"></i></a>
                         <a href="http://localhost:5000/deletar?id={{ i[0] }}"><i class="fa-solid fa-trash"></i></a>
-                        <a href=""><i class="fa-solid fa-circle-info"></i></a>
+                        <i class="fa-solid fa-circle-info" onclick="test{{i}}" data-bs-toggle="modal" data-bs-target="#exampleModal"></i>
                       </td>
                 </tr>
             {% endfor %}
