@@ -95,31 +95,32 @@ label {
 				<h3>Entrar</h3>
 			</div>
 			<div class="card-body">
-				<form>
+				<form method="POST" action="{{url_for('login')}}">
+					{{ form.hidden_tag() }}
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-user"></i></span>
 						</div>
-						<input type="text" class="form-control" placeholder="usuário">
-						
+						{{form.username(class_="form-control")}}						
 					</div>
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-key"></i></span>
 						</div>
-						<input type="password" class="form-control" placeholder="senha">
+						{{form.password(class_="form-control")}}
 					</div>
 					<div class="row align-items-center remember">
-						<input type="checkbox" id="lembrar"><label for="lembrar">Lembrar?</label>
+						<input type='hidden' value='0' name='lembrar'>
+						<input type="checkbox" id="lembrar" name="lembrar" value="1"><label for="lembrar">Lembrar?</label>
 					</div>
 					<div class="form-group">
-						<input type="submit" value="Login" class="btn float-right login_btn">
+						{{form.submit(class_="btn float-right login_btn")}}
 					</div>
 				</form>
 			</div>
 			<div class="card-footer">
 				<div class="d-flex justify-content-center links">
-					Não tem conta?<a href="#">Cadastrar</a>
+					Não tem conta?<a href="{{url_for('cadastrar')}}">Cadastrar</a>
 				</div>
 			</div>
 		</div>

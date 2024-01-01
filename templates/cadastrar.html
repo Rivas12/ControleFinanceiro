@@ -95,12 +95,13 @@ label {
 				<h3>Novo cadastro</h3>
 			</div>
 			<div class="card-body">
-				<form>
+				<form method="POST" action="">
+					{{ form.hidden_tag() }}
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-user"></i></span>
 						</div>
-						<input type="text" class="form-control" placeholder="usuário">
+						{{form.username(class_="form-control")}}
 						
 					</div>
 
@@ -108,7 +109,7 @@ label {
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
 						</div>
-						<input type="text" class="form-control" placeholder="e-mail">
+						{{form.email(class_="form-control")}}
 						
 					</div>
 
@@ -116,17 +117,17 @@ label {
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-key"></i></span>
 						</div>
-						<input type="password" class="form-control" placeholder="senha">
+						{{form.password(class_="form-control")}}
 					</div>
 
 					<div class="form-group">
-						<input type="submit" value="Cadastrar" class="btn float-right login_btn">
+						{{form.submit(class_="btn float-right login_btn")}}
 					</div>
 				</form>
 			</div>
 			<div class="card-footer">
 				<div class="d-flex justify-content-center links">
-					Já tem conta?<a href="#">Entrar</a>
+					Já tem conta?<a href="{{ url_for('login') }}">Entrar</a>
 				</div>
 			</div>
 		</div>

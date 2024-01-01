@@ -1,39 +1,54 @@
 {% extends 'templatebase.html' %}
-
+{% block title%}editar{% endblock %}
+{% block pageactive %}
+    #link-nav-{{page}}{
+        color: white !important;
+    }
+{% endblock %}
 {% block content %}
-<div class="row col-6 mt-4 ms-4">
-    <form class="bg-light p-2" method="POST">
-        <h2>Editar linha: {{ data[0][0] }}</h2>
-        <div class="row">
-            <div class="col">
-                <label for="nome" class="form-label">Nome</label>
-                <input type="text" class="form-control" value="{{ data[0][1] }}" id="nome" name="nome">
+    <div class="row col-6 mt-4 ms-4">
+        <form class="p-2 text-white" method="POST" action="{{ url_for('editar') ~ '?id=' ~ data[0].id }}">
+            {{ editarform.csrf_token }}
+            <h2>Editar linha: {{ data[0].id }}</h2>
+            <div class="row">
+                <div class="col">
+                    <label for="nome" class="form-label">Nome</label>
+                    {{ editarform.nome(class_="form-control", value="" ~ data[0].nome) }}
+                </div>
+                <div class="col">
+                    <label for="valor" class="form-label">Valor</label>
+                    {{ editarform.valor(class_="form-control", value="" ~ data[0].valor, step="0.01") }}
+                </div>
+                <div class="col">
+                    <label for="tipo" class="form-label">Tipo</label>
+                    {{ editarform.tipo(class_="form-control form-select", value="" ~ data[0].tipo, id="select-tipo-editar") }}
+                </div>
             </div>
-            <div class="col">
-                <label for="valor" class="form-label">valor</label>
-                <input type="number" class="form-control" step="0.01" value="{{ data[0][3] }}" id="valor" name="valor">
+            <div class="row mt-4">
+                <div class="col">
+                    <label for="data" class="form-label">Data</label>
+                    {{ editarform.data(class_="form-control", value="" ~ data[0].data) }}
+                </div>
+                <div class="col">
+                    <label for="categoria" class="form-label">Categoria</label>
+                    {{ editarform.categoria(class_="form-control", value="" ~ data[0].categoria, id="select-categoria-editar") }}
+                </div>
+                <div class="col" style="display: none;" id="quantidade-editar">
+                    <label for="categoria" class="form-label">Quantidade</label>
+                    {{ editarform.quantidade(class_="form-control", value="1") }}
+                </div>
             </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col">
-                <label for="data" class="form-label">Data</label>
-                <input type="date" class="form-control" value="{{ data[0][6] }}" id="data" name="data">
+            <div class="row mt-4">
+                <div class="col">
+                    <label for="descricao" class="form-label">Descrição</label>
+                    {{ editarform.descricao(class_="form-control", value="" ~ data[0].descricao) }}
+                    <!-- <textarea class="form-control" id="descricao" name="descricao">{{ data[0].descricao }}</textarea> -->
+                </div>
             </div>
-            <div class="col">
-                <label for="categoria" class="form-label">Categoria</label>
-                <input type="text" class="form-control" value="{{ data[0][4] }}" id="categoria" name="categoria">
+            <div class="mt-3">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Fechar</a>
+                {{ editarform.submit(class_="btn btn-primary") }}
             </div>
-        </div>
-        <div class="row mt-4">
-            <div class="col">
-                <label for="descricao" class="form-label">Descrição</label>
-                <textarea class="form-control" id="descricao" name="descricao">{{ data[0][5] }}</textarea>
-            </div>
-        </div>
-        <div class="mt-3">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-            <button type="submit" class="btn btn-primary">Salvar</button>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
 {% endblock %}

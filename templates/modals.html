@@ -1,0 +1,174 @@
+{% block modals %}
+<!-- Modal Vender Ação-->
+<div class="modal fade" id="modalvender" tabindex="-1" aria-labelledby="modalvender" aria-hidden="true">
+    <div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="modalvenderH">Vender <span class="text-success" id="ModalNome"></span>? <i class="fa-solid fa-up-long text-success" id="resolved-symbol-modalvender"></i> <span id="up">12.98</span>%</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body" id="modal-body">
+				<form action="{{url_for('venderinvestimento')}}" method="post">
+					<div class="row">
+						<input type="date" class="form-control col mx-1" placeholder="data" id="data-venda">
+						<input type="number" class="form-control col mx-1" placeholder="quantidade cotas" id="ModalQtd">
+						<input type="number" class="form-control col mx-1" placeholder="Preço" id="ModalPreco" step="0.1">
+					</div>
+			</div>
+			<div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-success">Vender</button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!-- Modal Entrada -->
+<div class="modal fade" id="ModalEntrada" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5">Nova entrada</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form class="row g-3" method="POST" action="{{ url_for('cadastrar_movimentacao') }}">
+					{{ form_entrada.csrf_token }}
+					{{ form_entrada.tipo(value="entrada") }}
+					<div class="col-md-6">
+						<label for="inputNomeModalEntrada" class="form-label">nome</label>
+						{{form_entrada.nome(class_="form-control")}}
+					</div>
+					<div class="col-md-6">
+						<label for="inputValorModalEntrada" class="form-label">valor</label>
+						{{form_entrada.valor(class_="form-control")}}
+					</div>
+					<div class="col-6">
+						<label for="inputDataModalEntrada" class="form-label">data</label>
+						{{form_entrada.data(class_="form-control")}}
+					</div>
+					<div class="col-md-6">
+						<label for="inputState" class="form-label">categoria</label>
+						{{form_entrada.categoria(class_="form-control select_entrada")}}
+					</div>
+					<div class="col-12">
+						<label for="inputDescricaoModalEntrada" class="form-label">descrição</label>
+						{{form_entrada.descricao(class_="form-control")}}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+						{{form_entrada.submit(class_="btn btn-primary")}}
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal Saída -->
+<div class="modal fade" id="ModalSaida" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5">Nova saída</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form class="row g-3" method="POST" action="{{ url_for('cadastrar_movimentacao') }}">
+					{{ form_saida.csrf_token }}
+					{{ form_saida.tipo(value="saida") }}
+					<div class="col-md-6">
+						<label for="inputNomeModalSaida" class="form-label">nome</label>
+						{{form_saida.nome(class_="form-control")}}
+					</div>
+					<div class="col-md-6">
+						<label for="inputValorModalSaida" class="form-label">valor</label>
+						{{form_saida.valor(class_="form-control")}}
+					</div>
+					<div class="col-6">
+						<label for="inputDataModalSaida" class="form-label">data</label>
+						{{form_saida.data(class_="form-control")}}
+					</div>
+					<div class="col-md-6">
+						<label for="inputCategoriaModalSaida" class="form-label">categoria</label>
+						{{ form_saida.categoria(class_="form-control") }}
+					</div>
+					<div class="col-12">
+						<label for="inputLocalModalSaida" class="form-label">Descrição</label>
+						{{form_saida.descricao(class_="form-control")}}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+						{{ form_saida.submit(class_="btn btn-primary") }}
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal Investimentos -->
+<div class="modal fade" id="ModalInvestimentos" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5">Novo investimento</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form class="row-4 g-3" method="POST" action="{{ url_for('cadastrar_movimentacao') }}">
+					{{ form_investimento.csrf_token }}
+					{{ form_investimento.tipo(value="investimento") }}
+					<div class="row">
+						<div class="col-md-6">
+							<label for="nome" class="form-label">nome</label>
+							{{ form_investimento.nome(class_="form-control") }}
+						</div>
+						<div class="col-md-6">
+							<label for="ativo" class="form-label">ativo</label>
+							{{ form_investimento.ativo(class_="form-control") }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<label for="inputValorModalInvest" class="form-label">Preço</label>
+							{{ form_investimento.valor(class_="form-control") }}
+						</div>
+						<div class="col-md-6">
+							<label for="inputValorModalInvest" class="form-label">quantidade</label>
+							{{ form_investimento.quantidade(class_="form-control") }}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-6">
+							<label for="inputDataModalInvest" class="form-label">data</label>
+							{{ form_investimento.data(class_="form-control") }}
+						</div>
+						<div class="col-md-6">
+							<label for="inputCategoriaModalInvest" class="form-label">tipo</label>
+							{{form_investimento.categoria(class_="form-control")}}
+						</div>
+					</div>
+					<div class="col-12">
+						<label for="inputLocalModalSaida" class="form-label">Descrição</label>
+						{{ form_investimento.descricao(class_="form-control") }}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+						{{ form_investimento.submit(class_="btn btn-primary") }}
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+

@@ -7,46 +7,131 @@
 {% endblock %}
 {% block content %}
 
-</div>
 <div class="container pt-5">
     <div class="row">
-        <table class="table">
-            <thead>
-            <tr class="table-dark">
-                <th scope="col">ID</th>
-                <th scope="col">Nome</th>
-                <th scope="col">Valor</th>
-                <th scope="col">Categoria</th>
-                <th scope="col">Descrição</th>
-                <th scope="col">Data</th>
-                <th scope="col">Ações</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for i in data %}
-                <tr {% if i[2] == "entrada": %}
-                        class="table-success"
-                    {% elif i[2] == "saida": %}
-                        class="table-danger"
-                    {% elif i[2] == "investimento": %}
-                        class="table-warning"
-                    {% endif %}
-                         >
-                    <td>{{ i[0] }}</td>
-                    <td>{{ i[1] }}</td>
-                    <td>R${{ i[3] }}</td>
-                    <td>{{ i[4] }}</td>
-                    <td id="table-desc">{{ i[5] }}</td>
-                    <td>{{ i[6] }}</td>
-                    <td>
-                        <a href="http://localhost:5000/editar?id={{ i[0] }}"><i class="fa-regular fa-pen-to-square"></i></a>
-                        <a href="http://localhost:5000/deletar?id={{ i[0] }}"><i class="fa-solid fa-trash"></i></a>
-                        <i class="fa-solid fa-circle-info" onclick="test{{i}}" data-bs-toggle="modal" data-bs-target="#exampleModal"></i>
-                      </td>
+        {% if data == 0 %}
+            {% if page == "dashboard" %}
+                <h1 class="text-white text-center">Nenhuma movimentação encontrada!</h1>
+                <h2 class="text-white text-center">Gostaria de criar uma?</h2>
+                <div class="text-center col mt-3">
+                    <button type="button" class="btn btn-success center" data-bs-toggle="modal" data-bs-target="#ModalEntrada">Criar entrada</button>
+                    <button type="button" class="btn btn-danger center" data-bs-toggle="modal" data-bs-target="#ModalSaida">Criar saída</button>
+                    <button type="button" class="btn btn-warning center" data-bs-toggle="modal" data-bs-target="#ModalInvestimentos">Criar investimento</button>
+                </div>
+            {% elif page == "entrada" %}
+                <h1 class="text-white text-center">Nenhuma entrada encontrada!</h1>
+                <h2 class="text-white text-center">Gostaria de criar uma?</h2>
+                <div class="text-center col mt-3">
+                    <button type="button" class="btn btn-success center" data-bs-toggle="modal" data-bs-target="#ModalEntrada">Criar entrada</button>
+                </div>
+            {% elif page == "saida" %}
+                <h1 class="text-white text-center">Nenhuma saída encontrada!</h1>
+                <h2 class="text-white text-center">Gostaria de criar uma?</h2>
+                <div class="text-center col mt-3">
+                    <button type="button" class="btn btn-danger center" data-bs-toggle="modal" data-bs-target="#ModalSaida">Criar saída</button>
+                </div>
+            {% elif page == "investimento" %}
+                <h1 class="text-white text-center">Nenhum investimento encontrado!</h1>
+                <h2 class="text-white text-center">Gostaria de criar um?</h2>
+                <div class="text-center col mt-3">
+                    <button type="button" class="btn btn-warning center" data-bs-toggle="modal" data-bs-target="#ModalInvestimentos">Criar investimento</button>
+                </div>
+            {% endif %}
+            
+        {% else %}
+
+        {% if page == "investimento" %}
+        
+            <table class="table">
+                <thead>
+                    <tr class="table-dark">
+                        <th scope="col">ID</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Ativo</th>
+                        <th scope="col">Preço</th>
+                        <th scope="col">Qtd</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Data compra</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                {% for row in data %}
+                    <tr {% if row[0].tipo == "entrada" %}
+                            class="table-success"
+                        {% elif row[0].tipo == "saida": %}
+                            class="table-danger"
+                        {% elif row[0].tipo == "investimento": %}
+                            class="table-warning"
+                        {% endif %}
+                    >
+                        <td>{{ row[0].id }}</td>
+                        <td>{{ row[0].nome }}</td>
+                        <td>{{ row[0].ativo }}</td>
+                        <td>R${{ row[0].valor }}</td>
+                        <td>{{ row[0].quantidade }}</td>
+                        <td>R${{ row[0].valor * row[0].quantidade }}</td>
+                        <td id="table-desc">{{ row[0].descricao }}</td>
+                        <td>{{ row[0].data }}</td>
+                        <td>
+                            <a href="#" title="vender" onclick="VenderModal('{{row[0].ativo}}', {{row[0].quantidade}}, {{row[0].valor}}, {{row[0].id}});"><i class="fa-solid fa-money-bill-transfer"></i></a>
+                            <a href="{{ url_for('editar') ~ '?id=' ~ row[0].id }}"><i class="fa-regular fa-pen-to-square"></i></a>
+                            <a href="{{ url_for('deletar') ~ '?id=' ~ row[0].id }}"><i class="fa-solid fa-trash" id=""></i></a>
+                            <i class="fa-solid fa-circle-info" onclick=""></i>
+                        </td>
+                    </tr>
+                {% endfor %}
+        {% else %}
+        {% if page == "dashboard" %}
+            <div class="jumbotron jumbotron-fluid" style="background-color:#CFD8DC;">
+                <div class="container">
+                <h1 class="display-4">Fluid jumbotron</h1>
+                <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+                </div>
+            </div>
+        {% else %}
+
+            <table class="table">
+                <thead>
+                <tr class="table-dark">
+                    <th scope="col">ID</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Valor</th>
+                    <th scope="col">Categoria</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col">Data</th>
+                    <th scope="col">Ações</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for row in data %}
+                    <tr {% if row[0].tipo == "entrada" %}
+                            class="table-success"
+                        {% elif row[0].tipo == "saida": %}
+                            class="table-danger"
+                        {% elif row[0].tipo == "investimento": %}
+                            class="table-warning"
+                        {% endif %}
+                    >
+                        <td>{{ row[0].id }}</td>
+                        <td>{{ row[0].nome }}</td>
+                        <td>R${{ row[0].valor }}</td>
+                        <td>{{ row[0].categoria }}</td>
+                        <td id="table-desc">{{ row[0].descricao }}</td>
+                        <td>{{ row[0].data }}</td>
+                        <td>
+                            <a href="{{ url_for('editar') ~ '?id=' ~ row[0].id }}"><i class="fa-regular fa-pen-to-square"></i></a>
+                            <a href="{{ url_for('deletar') ~ '?id=' ~ row[0].id }}"><i class="fa-solid fa-trash"></i></a>
+                            <i class="fa-solid fa-circle-info" onclick="test{{i}}" data-bs-toggle="modal" data-bs-target="#exampleModal"></i>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
     </div>
+    {% endif %}{% endif %}
 </div>
 {% endblock %}
