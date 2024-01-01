@@ -4,3 +4,4 @@ Flask-WTF==1.1.1
 Flask-Login==0.6.2
 Flask-Bcrypt==1.0.1
 gunicorn
+Werkzeug==2.3.6
