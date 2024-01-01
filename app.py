@@ -235,4 +235,4 @@ def editar():
         return render_template("editar.html", page = "dashboard", data = data,  form_entrada = form_entrada, form_saida = form_saida, form_investimento = form_investimento, editarform = editarform, form_vender_investimento = form_vender_investimento)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run()
