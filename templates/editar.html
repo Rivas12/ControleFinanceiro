@@ -20,8 +20,8 @@
                     {{ editarform.valor(class_="form-control", value="" ~ data[0].valor, step="0.01") }}
                 </div>
                 <div class="col">
-                    <label for="tipo" class="form-label">Tipo</label>
-                    {{ editarform.tipo(class_="form-control form-select", value="" ~ data[0].tipo, id="select-tipo-editar") }}
+                    <label for="tipo" class="form-label" id="tipo-editar">Tipo</label>
+                    {{ editarform.tipo(class_="form-control form-select", id="select-tipo-editar") }}
                 </div>
             </div>
             <div class="row mt-4">
@@ -33,9 +33,9 @@
                     <label for="categoria" class="form-label">Categoria</label>
                     {{ editarform.categoria(class_="form-control", value="" ~ data[0].categoria, id="select-categoria-editar") }}
                 </div>
-                <div class="col" style="display: none;" id="quantidade-editar">
+                <div class="col" id="quantidade-editar">
                     <label for="categoria" class="form-label">Quantidade</label>
-                    {{ editarform.quantidade(class_="form-control", value="1") }}
+                    {{ editarform.quantidade(class_="form-control", value="" ~ data[0].quantidade) }}
                 </div>
             </div>
             <div class="row mt-4">
@@ -51,4 +51,10 @@
             </div>
         </form>
     </div>
+{% endblock %}
+{% block jseditar %}
+<script>
+    TipoCategoriaEditar("{{ data[0].tipo }}", "{{ data[0].categoria }}")
+    $("#select-tipo-editar option[value={{ data[0].tipo }}]").prop("selected", true);
+</script>
 {% endblock %}

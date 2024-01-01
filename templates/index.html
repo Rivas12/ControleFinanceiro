@@ -41,6 +41,7 @@
         {% else %}
 
         {% if page == "investimento" %}
+
         
             <table class="table">
                 <thead>
@@ -51,7 +52,7 @@
                         <th scope="col">Preço</th>
                         <th scope="col">Qtd</th>
                         <th scope="col">Total</th>
-                        <th scope="col">Tipo</th>
+                        <th scope="col">Categoria</th>
                         <th scope="col">Data compra</th>
                         <th scope="col">Ações</th>
                     </tr>
@@ -73,7 +74,7 @@
                         <td>R${{ row[0].valor }}</td>
                         <td>{{ row[0].quantidade }}</td>
                         <td>R${{ row[0].valor * row[0].quantidade }}</td>
-                        <td id="table-desc">{{ row[0].descricao }}</td>
+                        <td id="table-desc">{{ row[0].categoria }}</td>
                         <td>{{ row[0].data }}</td>
                         <td>
                             <a href="#" title="vender" onclick="VenderModal('{{row[0].ativo}}', {{row[0].quantidade}}, {{row[0].valor}}, {{row[0].id}});"><i class="fa-solid fa-money-bill-transfer"></i></a>
@@ -85,12 +86,188 @@
                 {% endfor %}
         {% else %}
         {% if page == "dashboard" %}
-            <div class="jumbotron jumbotron-fluid" style="background-color:#CFD8DC;">
-                <div class="container">
-                <h1 class="display-4">Fluid jumbotron</h1>
-                <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+        
+        <div id="container">
+            <div class="cards"  onclick="alert('Esse card soma todas as Entradas e Investimentos criados!')">
+                <div class="image">
+                    <h2><i class="fa-solid fa-landmark fa-xl"></i></h2>
+                </div>
+                <div class="vr" style="color: green;"></div>
+                <div class="body">
+                    <div class="title">
+                        <h3>PATRIMÔNIO</h3>
+                    </div>
+                    <div class="content">
+                        R$ {{ dict_distribuicao['patrimonio'] }}
+                    </div>
                 </div>
             </div>
+
+            <div class="cards" onclick="alert('Esse card soma todos os investimentos criados!')">
+                <div class="image">
+                    <h2><i class="fa-solid fa-hand-holding-dollar fa-xl"></i></h2>
+                </div>
+                <div class="vr" style="color: green;"></div>
+                <div class="body">
+                    <div class="title">
+                        <h3>INVESTIDO</h3>
+                    </div>
+                    <div class="content">
+                        R$ {{ dict_distribuicao['total_investido'] }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="cards" onclick="alert('Esse card soma todos os dividendos de investimentos!')">
+                <div class="image">
+                    <h2><i class="fa-solid fa-chart-line fa-xl"></i></h2>
+                </div>
+                <div class="vr" style="color: green;"></div>
+                <div class="body">
+                    <div class="title">
+                        <h3>GANHOS</h3>
+                    </div>
+                    <div class="content">
+                        R$ {% if dict_distribuicao['total_dividendos'] == None %} 0 {% else %} {{ dict_distribuicao['total_dividendos'] }} {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="jumbotron jumbotron-fluid bg-light mt-4 mb-2">
+            <div class="container">
+                <h2 class="text-center m-2">GRÁFICOS</h2>
+                {% if dict_distribuicao['ativos'] != [] %}
+                <div style="justify-content: space-around; display: flex;">
+                    <div id="distribuicao"></div>
+                    <div id="ativos"></div>
+                    <script type="text/javascript">        
+                        var options_distribuicao = {
+                        series: [{{ dict_distribuicao['renda fixa'] }}, {{ dict_distribuicao['renda variavel'] }}, {{ dict_distribuicao['fii'] }}, {{ dict_distribuicao['etf'] }}, {{ dict_distribuicao['brd'] }}, {{ dict_distribuicao['criptomoedas'] }}],
+                        chart: {
+                        width: 480,
+                        type: 'pie',
+                        },
+                        dataLabels: {
+                            textAnchor: "start",
+                            formatter: function (val, opt) {
+                                return 'R$' + opt.w.globals.series[opt.seriesIndex]
+                                }
+                        },
+                        labels: ['Renda fixa', 'Renda variavel', 'Fundos imobiliarios', 'ETF', 'BRD', 'Criptomoedas'],
+                        responsive: [{
+                        breakpoint: 480,
+                        options: {
+                            chart: {
+                                width: 200
+                            },
+                            legend: {
+                                position: 'bottom'
+                            },
+                        }
+                        }]
+                        };
+        
+                        var chart = new ApexCharts(document.querySelector("#distribuicao"), options_distribuicao);
+                        chart.render();
+                    </script>
+                    <script type="text/javascript">        
+                        var options = {
+                        series: [{% for i in dict_distribuicao['ativos'] %}
+                                    {{i[1]}},
+                                {% endfor %}],
+                        chart: {
+                        width: 480,
+                        type: 'pie',
+                        },
+                        dataLabels: {
+                            textAnchor: "start",
+                            formatter: function (val, opt) {
+                                return opt.w.globals.labels[opt.seriesIndex]
+                            }
+                        },
+                        labels: [{% for i in dict_distribuicao['ativos'] %}
+                                    '{{i[0]}}',
+                                {% endfor %}],
+                        responsive: [{
+                        breakpoint: 480,
+                        options: {
+                            chart: {
+                                width: 200
+                            },
+                            legend: {
+                                position: 'bottom'
+                            },
+                        }
+                        }]
+                        };
+        
+                        var chart = new ApexCharts(document.querySelector("#ativos"), options);
+                        chart.render();
+                    </script>
+                </div>
+                {% endif %}
+                	<div id="grafico" class="mb-5"></div>
+                    <script>
+                        var options = {
+                            series: [{
+                            name: 'R$',
+                            {% if dict_distribuicao['total_entradas'] > 0 or dict_distribuicao['total_saidas'] > 0 or dict_distribuicao['total_investimentos'] > 0 %}
+                                data: [{{ dict_distribuicao['total_entradas'] }}, {{ dict_distribuicao['total_saidas'] }}, {{ dict_distribuicao['total_investimentos'] }}]
+                            {% else %}
+                                data: [0, 0, 0]
+                            {% endif %}
+                            }],
+                            chart: {
+                                height: 350,
+                                type: 'bar',
+                                events: {
+                                    click: function(chart, w, e) {
+                                    // console.log(chart, w, e)
+                                    }
+                                }
+                            },
+                            colors: ['#008450', '#B81D13', '#EFB700'],
+                            plotOptions: {
+                                bar: {
+                                    columnWidth: '45%',
+                                    distributed: true,
+                                }
+                            },
+                            dataLabels: {
+                                enabled: true,
+                                formatter: function (val, opt) {
+                                    return 'R$' + opt.w.globals.series[opt.seriesIndex][opt.dataPointIndex]
+                                }
+                            },
+                            legend: {
+                                show: false
+                            },
+                            xaxis: {
+                                categories: [
+                                    'Entradas',
+                                    'Saidas',
+                                    'investimentos'
+                                ],
+                            labels: {
+                                style: {
+                                    colors: ['#008450', '#B81D13', '#EFB700'],
+                                    fontSize: '12px'
+                                }
+                            }
+                            }
+                        };
+            
+                        var chart = new ApexCharts(document.querySelector("#grafico"), options);
+                        chart.render();
+                    </script>
+              
+            </div>
+        </div>
+            <div class="text-center col mt-3 mb-5">
+                <button type="button" class="btn btn-warning center" data-bs-toggle="modal" data-bs-target="#ModalInvestimentos">Novo investimento</button>
+            </div>
+
         {% else %}
 
             <table class="table">

@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import select
+from sqlalchemy import select, func, desc, asc
 from datetime import datetime
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt, check_password_hash
@@ -53,7 +53,7 @@ with app.app_context():
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(user_id)
+    return db.session.get(User, user_id)
 
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
@@ -91,16 +91,32 @@ def home():
 @app.route('/dashboard')
 @login_required
 def dashboard():
+    print(current_user.id)
     form_entrada = ModalBoxFormEntrada()
     form_saida = ModalBoxFormSaida()
     form_investimento = ModalBoxFormInvestimento()
     form_vender_investimento = VenderForm()
-    data = db.session.execute(select(Movimentacoes).where(Movimentacoes.id_user == current_user.id))
-    if len(list(data)) == 0:
-        data = 0
-    else:
+    dict_distribuicao = {
+        'ativos': db.session.execute(select(Movimentacoes.nome, Movimentacoes.valor * Movimentacoes.quantidade).where(Movimentacoes.id_user == current_user.id, Movimentacoes.tipo == 'investimento')).all(),
+        'patrimonio': db.session.execute(select(func.sum(Movimentacoes.valor * Movimentacoes.quantidade)).where((Movimentacoes.id_user == current_user.id) & ((Movimentacoes.tipo == 'investimento') | (Movimentacoes.tipo == 'entrada')))).scalar(),
+        'total_investido': db.session.execute(select(func.sum(Movimentacoes.valor * Movimentacoes.quantidade)).where(Movimentacoes.id_user == current_user.id,Movimentacoes.tipo == 'investimento')).scalar(),
+        'total_dividendos': db.session.execute(select(func.coalesce(func.sum(Movimentacoes.valor * Movimentacoes.quantidade), 0)).where(Movimentacoes.id_user == current_user.id,Movimentacoes.tipo == 'entrada',Movimentacoes.categoria == 'dividendo')).scalar() + round(db.session.execute(func.coalesce(select(func.sum((InvestimentosVendidos.valor_venda - InvestimentosVendidos.valor_compra) * InvestimentosVendidos.quantidade_venda)).where(Movimentacoes.id_user == current_user.id), 0)).scalar(), 2),
+        'renda fixa': db.session.execute(select(func.sum(Movimentacoes.valor * Movimentacoes.quantidade)).where(Movimentacoes.id_user == current_user.id,Movimentacoes.tipo == 'investimento',Movimentacoes.categoria == 'renda fixa')).scalar(),
+        'renda variavel': db.session.execute(select(func.sum(Movimentacoes.valor * Movimentacoes.quantidade)).where(Movimentacoes.id_user == current_user.id,Movimentacoes.tipo == 'investimento',Movimentacoes.categoria == 'renda variavel')).scalar(),
+        'fii': db.session.execute(select(func.sum(Movimentacoes.valor * Movimentacoes.quantidade)).where(Movimentacoes.id_user == current_user.id,Movimentacoes.tipo == 'investimento',Movimentacoes.categoria == 'fii')).scalar(),
+        'etf': db.session.execute(select(func.sum(Movimentacoes.valor * Movimentacoes.quantidade)).where(Movimentacoes.id_user == current_user.id,Movimentacoes.tipo == 'investimento',Movimentacoes.categoria == 'etf')).scalar(),
+        'brd': db.session.execute(select(func.sum(Movimentacoes.valor * Movimentacoes.quantidade)).where(Movimentacoes.id_user == current_user.id,Movimentacoes.tipo == 'investimento',Movimentacoes.categoria == 'brd')).scalar(),
+        'criptomoedas': db.session.execute(select(func.sum(Movimentacoes.valor * Movimentacoes.quantidade)).where(Movimentacoes.id_user == current_user.id,Movimentacoes.tipo == 'investimento',Movimentacoes.categoria == 'criptomoedas')).scalar(),
+        'total_entradas': db.session.execute(select(func.sum(Movimentacoes.valor * Movimentacoes.quantidade)).where(Movimentacoes.id_user == current_user.id,Movimentacoes.tipo == 'entrada')).scalar(),
+        'total_saidas': db.session.execute(select(func.sum(Movimentacoes.valor * Movimentacoes.quantidade)).where(Movimentacoes.id_user == current_user.id,Movimentacoes.tipo == 'saida')).scalar(),
+        'total_investimentos': db.session.execute(select(func.sum(Movimentacoes.valor * Movimentacoes.quantidade)).where(Movimentacoes.id_user == current_user.id,Movimentacoes.tipo == 'investimento')).scalar()
+    }
+    # Substituir valores "None" por 0
+    for chave, valor in dict_distribuicao.items():
+        if valor is None:
+            dict_distribuicao[chave] = 0
         data = db.session.execute(select(Movimentacoes).where(Movimentacoes.id_user == current_user.id))
-    return render_template('index.html', page = "dashboard", data = data, form_entrada = form_entrada, form_saida = form_saida, form_investimento = form_investimento, form_vender_investimento = form_vender_investimento)
+    return render_template('index.html', page = "dashboard", data = data, form_entrada = form_entrada, form_saida = form_saida, form_investimento = form_investimento, form_vender_investimento = form_vender_investimento, dict_distribuicao = dict_distribuicao)
 
 @app.route('/entradas', methods = ['GET', 'POST'])
 @login_required
@@ -113,7 +129,7 @@ def entrada():
     if len(list(data)) == 0:
         data = 0
     else:
-        data = db.session.execute(select(Movimentacoes).where(Movimentacoes.id_user == current_user.id, Movimentacoes.tipo == "entrada"))
+        data = db.session.execute(select(Movimentacoes).where(Movimentacoes.id_user == current_user.id, Movimentacoes.tipo == "entrada").order_by(Movimentacoes.data.desc()))
     if form_entrada.validate_on_submit():
         tipo = "entrada"
         nova_movimentacao = Movimentacoes(id_user = current_user.id, nome = form_entrada.nome.data, tipo = tipo, valor = form_entrada.valor.data, categoria = form_entrada.categoria.data, descricao = form_entrada.descricao.data, data = form_entrada.data.data)
@@ -133,7 +149,7 @@ def saida():
     if len(list(data)) == 0:
         data = 0
     else:
-        data = db.session.execute(select(Movimentacoes).where(Movimentacoes.id_user == current_user.id, Movimentacoes.tipo == "saida"))
+        data = db.session.execute(select(Movimentacoes).where(Movimentacoes.id_user == current_user.id, Movimentacoes.tipo == "saida").order_by(Movimentacoes.data.desc()))
     return render_template('index.html', data = data,  form_entrada = form_entrada, form_saida = form_saida, form_investimento = form_investimento, form_vender_investimento = form_vender_investimento, page = "saida")
 
 @app.route('/investimentos')
@@ -147,7 +163,7 @@ def investimentos():
     if len(list(data)) == 0:
         data = 0
     else:
-        data = db.session.execute(select(Movimentacoes).where(Movimentacoes.id_user == current_user.id, Movimentacoes.tipo == "investimento"))
+        data = db.session.execute(select(Movimentacoes).where(Movimentacoes.id_user == current_user.id, Movimentacoes.tipo == "investimento").order_by(Movimentacoes.data.desc()))
     return render_template('index.html', data = data,  form_entrada = form_entrada, form_saida = form_saida, form_investimento = form_investimento, form_vender_investimento = form_vender_investimento, page = "investimento")
 
 @app.route('/venderinvestimento', methods = ['POST', 'GET'])
@@ -168,17 +184,20 @@ def cadastrar_movimentacao():
     form_saida = ModalBoxFormSaida()
     form_investimento = ModalBoxFormInvestimento()
     if form_entrada.validate_on_submit():
-        nova_movimentacao = Movimentacoes(id_user = current_user.id, nome = form_entrada.nome.data, tipo = form_entrada.tipo.data, valor = form_entrada.valor.data, categoria = form_entrada.categoria.data, descricao = form_entrada.descricao.data, data = form_entrada.data.data)
+        nova_movimentacao = Movimentacoes(id_user = current_user.id, nome = form_entrada.nome.data, quantidade = 1, tipo = form_entrada.tipo.data, valor = form_entrada.valor.data, categoria = form_entrada.categoria.data, descricao = form_entrada.descricao.data, data = form_entrada.data.data)
         db.session.add(nova_movimentacao)
         db.session.commit()
+        return redirect(url_for('entrada'))
     elif form_saida.validate_on_submit():
-        nova_movimentacao = Movimentacoes(id_user = current_user.id, nome = form_saida.nome.data, tipo = form_saida.tipo.data, valor = form_saida.valor.data, categoria = form_saida.categoria.data, descricao = form_saida.descricao.data, data = form_saida.data.data)
+        nova_movimentacao = Movimentacoes(id_user = current_user.id, nome = form_saida.nome.data, quantidade = 1, tipo = form_saida.tipo.data, valor = form_saida.valor.data, categoria = form_saida.categoria.data, descricao = form_saida.descricao.data, data = form_saida.data.data)
         db.session.add(nova_movimentacao)
         db.session.commit()
+        return redirect(url_for('saida'))
     elif form_investimento.validate_on_submit():
         nova_movimentacao = Movimentacoes(id_user = current_user.id, nome = form_investimento.nome.data,ativo = form_investimento.ativo.data, tipo = form_investimento.tipo.data, quantidade = form_investimento.quantidade.data, valor = form_investimento.valor.data, categoria = form_investimento.categoria.data, descricao = form_investimento.descricao.data, data = form_investimento.data.data)
         db.session.add(nova_movimentacao)
         db.session.commit()
+        return redirect(url_for('investimentos'))
     return redirect(url_for('dashboard'))
 
 @app.route('/deletar', methods = ['POST', 'GET'])
@@ -197,19 +216,22 @@ def editar():
     editarform = EditarForm()
     form_vender_investimento = VenderForm()
     data = Movimentacoes.query.filter_by(id_user = current_user.id, id = request.args["id"])
-
+    print(editarform.categoria.data)
     if editarform.validate_on_submit():
+        print(editarform.quantidade.data)
         updates = dict(nome = editarform.nome.data, 
                        valor = editarform.valor.data,
                        tipo = editarform.tipo.data,
                        categoria = editarform.categoria.data,
+                       quantidade = editarform.quantidade.data,
                        data = datetime.strptime(str(editarform.data.data), '%Y-%m-%d'),
                        descricao = editarform.descricao.data)
-        print("passou")
+        print(editarform.quantidade.data)
         Movimentacoes.query.filter_by(id_user = current_user.id, id = request.args["id"]).update(updates)
         db.session.commit()
         return redirect(url_for('dashboard'))
     else:
+        print(editarform.errors)
         return render_template("editar.html", page = "dashboard", data = data,  form_entrada = form_entrada, form_saida = form_saida, form_investimento = form_investimento, editarform = editarform, form_vender_investimento = form_vender_investimento)
 
 if __name__ == "__main__":

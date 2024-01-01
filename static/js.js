@@ -22,26 +22,32 @@ $(document).ready(function(){
       case "entrada":
         $('#select-categoria-editar').empty();
         $('#select-categoria-editar').append('<option value="salario">Salario</option>');
-        $('#select-categoria-editar').append('<option value="Venda de servico">Venda de servico</option>');
-        $('#select-categoria-editar').append('<option value="Venda de produto">Venda de produto</option>');
-        $("#quantidade-editar").css("display", "none");
+        $('#select-categoria-editar').append('<option value="venda de servico">Venda de servico</option>');
+        $('#select-categoria-editar').append('<option value="venda de produto">Venda de produto</option>');
+        $("#quantidade-editar input").val(1);
+        $("#quantidade-editar input").attr({"max": "1", "min": "1"});
         break;
       case "saida":
         $('#select-categoria-editar').empty();
         $('#select-categoria-editar').append('<option value="compra">Compra</option>');
-        $("#quantidade-editar").css("display", "none");
+        $("#quantidade-editar input").val(1);
+        $("#quantidade-editar input").attr({"max": "1", "min": "1"});
         break;
       case "investimento":
         $('#select-categoria-editar').empty();
-        $('#select-categoria-editar').append('<option value="Renda fixa">Renda fixa</option>');
-        $('#select-categoria-editar').append('<option value="Renda variavel">Renda variavel</option>');
-        $('#select-categoria-editar').append('<option value="FII">FII</option>');
-        $('#select-categoria-editar').append('<option value="ETF">ETF</option>');
-        $('#select-categoria-editar').append('<option value="BRD">BRD</option>');
-        $('#select-categoria-editar').append('<option value="Criptomoedas">Criptomoedas</option>');
-        $("#quantidade-editar").css("display", "block");
+        $('#select-categoria-editar').append('<option value="renda fixa">Renda fixa</option>');
+        $('#select-categoria-editar').append('<option value="renda variavel">Renda variavel</option>');
+        $('#select-categoria-editar').append('<option value="fii">FII</option>');
+        $('#select-categoria-editar').append('<option value="etf">ETF</option>');
+        $('#select-categoria-editar').append('<option value="brd">BRD</option>');
+        $('#select-categoria-editar').append('<option value="criptomoedas">Criptomoedas</option>');
+        $("#quantidade-editar input").removeAttr("max");
     }
   });
+  if ($("#select-tipo-editar").val() == "investimento"){
+    $("#quantidade-editar").prop("disabled", false);
+  }
+  
 });
 
 // funcao setar no modal/ onclick
@@ -52,7 +58,6 @@ var dia = String(data.getDate()).padStart(2, '0');
 var mes = String(data.getMonth() + 1).padStart(2, '0');
 var ano = data.getFullYear();
 dataAtual = ano + '-' + mes + '-' + dia;
-console.log(dataAtual);
 
 function VenderModal(nome, quantidade, preco, id){
   $("#ModalNome").html(nome);
@@ -79,4 +84,33 @@ function VenderModal(nome, quantidade, preco, id){
   }
     $("#up").text(calculo.toFixed(2))
 }
-
+function TipoCategoriaEditar(tipo, categoria){
+  switch(tipo) {
+    case "entrada":
+      $("#select-categoria-editar option[value='entrada'").prop("selected", true);
+      $('#select-categoria-editar').empty();
+      $('#select-categoria-editar').append('<option value="salario">Salario</option>');
+      $('#select-categoria-editar').append('<option value="venda de servico">Venda de servico</option>');
+      $('#select-categoria-editar').append('<option value="venda de produto">Venda de produto</option>');
+      $("#quantidade-editar input").val(1);
+      $("#quantidade-editar input").attr({"max": "1", "min": "1"});
+      break;
+    case "saida":
+      $("#select-categoria-editar option[value='saida']").prop("selected", true);
+      $('#select-categoria-editar').empty();
+      $('#select-categoria-editar').append('<option value="compra">Compra</option>');
+      $("#quantidade-editar input").val(1);
+      $("#quantidade-editar input").attr({"max": "1", "min": "1"});
+      break;
+    case "investimento":
+      $("#select-categoria-editar option[value='investimento']").prop("selected", true);
+      $('#select-categoria-editar').empty();
+      $('#select-categoria-editar').append('<option value="renda fixa">Renda fixa</option>');
+      $('#select-categoria-editar').append('<option value="renda variavel">Renda variavel</option>');
+      $('#select-categoria-editar').append('<option value="fii">FII</option>');
+      $('#select-categoria-editar').append('<option value="etf">ETF</option>');
+      $('#select-categoria-editar').append('<option value="brd">BRD</option>');
+      $('#select-categoria-editar').append('<option value="criptomoedas">Criptomoedas</option>');
+      $("#quantidade-editar input").removeAttr("max", "min");
+  }
+}
