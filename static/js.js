@@ -1,4 +1,5 @@
 $(document).ready(function(){
+  $('input').attr('autocomplete', 'off');
   $("#ModalQtd, #ModalPreco").change(function(){
     valor_atual = $("#preco_compra").val()
     valor_novo = $("#ModalPreco").val()

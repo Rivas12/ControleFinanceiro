@@ -1,4 +1,4 @@
-from wtforms import StringField, PasswordField, SubmitField, EmailField, DateField, IntegerField, HiddenField, FloatField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, EmailField, DateField, IntegerField, HiddenField, FloatField, SelectField, BooleanField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_wtf import FlaskForm
 
@@ -11,6 +11,7 @@ class RegisterForm(FlaskForm):
 class LoginForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=3, max=50)], render_kw={"placeholder" : "Usuário"})
     password = PasswordField(validators=[InputRequired(), Length(min=3, max=20)], render_kw={"placeholder" : "Senha"})
+    lembrar = BooleanField(render_kw ={'checked':''})
     submit = SubmitField("login")
     
 

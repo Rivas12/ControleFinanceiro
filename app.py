@@ -62,7 +62,10 @@ def login():
         user = User.query.filter_by(username = form.username.data).first()
         if user:
             if check_password_hash(user.password, form.password.data):
-                login_user(user)
+                if form.lembrar.data == True:
+                    login_user(user, remember=True)
+                else:
+                    login_user(user, remember=False)
                 return redirect(url_for('dashboard'))
     return render_template('login.html', form = form)
 
@@ -91,7 +94,6 @@ def home():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    print(current_user.id)
     form_entrada = ModalBoxFormEntrada()
     form_saida = ModalBoxFormSaida()
     form_investimento = ModalBoxFormInvestimento()
@@ -235,4 +237,4 @@ def editar():
         return render_template("editar.html", page = "dashboard", data = data,  form_entrada = form_entrada, form_saida = form_saida, form_investimento = form_investimento, editarform = editarform, form_vender_investimento = form_vender_investimento)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
