@@ -95,7 +95,10 @@ label {
 				<h3>Novo cadastro</h3>
 			</div>
 			<div class="card-body">
-				<form method="POST" action="">
+				{% if mensagem != ""%}
+					<span style="color: red; border: 1px solid red; padding: 5px;">{{ mensagem }}</span>
+				{% endif %}
+				<form method="POST" action="" class="mt-3">
 					{{ form.hidden_tag() }}
 					<div class="input-group form-group">
 						<div class="input-group-prepend">

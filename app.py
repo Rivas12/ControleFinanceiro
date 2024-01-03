@@ -73,14 +73,17 @@ def login():
 def cadastrar():
     form = RegisterForm()
 
-    if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data)
-        new_user = User(username = form.username.data, email = form.email.data, password = hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
-        return redirect(url_for('login'))
-    
-    return render_template('cadastrar.html', form = form)
+    if form.validate_on_submit(): 
+        user = User.query.filter_by(username = form.username.data).first()
+        if user != None:
+            return render_template('cadastrar.html', form = form, mensagem = "Nome de usuário já existe!")
+        else:
+            hashed_password = bcrypt.generate_password_hash(form.password.data)
+            new_user = User(username = form.username.data, email = form.email.data, password = hashed_password)
+            db.session.add(new_user)
+            db.session.commit()
+            return redirect(url_for('login'))
+    return render_template('cadastrar.html', form = form, mensagem = "")
 
 @app.route('/logout', methods = ['GET', 'POST'])
 def logout():
