@@ -11,7 +11,6 @@ class RegisterForm(FlaskForm):
 class LoginForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=3, max=50)], render_kw={"placeholder" : "Usuário"})
     password = PasswordField(validators=[InputRequired(), Length(min=3, max=20)], render_kw={"placeholder" : "Senha"})
-    lembrar = BooleanField(render_kw ={'checked':''})
     submit = SubmitField("login")
     
 

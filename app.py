@@ -62,12 +62,12 @@ def login():
         user = User.query.filter_by(username = form.username.data).first()
         if user:
             if check_password_hash(user.password, form.password.data):
-                if form.lembrar.data == True:
                     login_user(user, remember=True)
-                else:
-                    login_user(user, remember=False)
-                return redirect(url_for('dashboard'))
-    return render_template('login.html', form = form)
+                    return redirect(url_for('dashboard'))
+            return render_template('login.html', form = form, mensagem = "senha inválida")
+        else:
+            return render_template('login.html', form = form, mensagem = "usuário inválido")
+    return render_template('login.html', form = form, mensagem = "")
 
 @app.route('/cadastrar', methods = ['GET', 'POST'])
 def cadastrar():
