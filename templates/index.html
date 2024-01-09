@@ -7,7 +7,7 @@
 {% endblock %}
 {% block content %}
 
-<div class="container pt-5">
+<div class="container my-5">
     <div class="row">
         {% if data == 0 %}
             {% if page == "dashboard" %}
@@ -41,49 +41,77 @@
         {% else %}
 
         {% if page == "investimento" %}
-
-        
-            <table class="table">
-                <thead>
-                    <tr class="table-dark">
-                        <th scope="col">ID</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Ativo</th>
-                        <th scope="col">Preço</th>
-                        <th scope="col">Qtd</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Categoria</th>
-                        <th scope="col">Data compra</th>
-                        <th scope="col">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                
-                {% for row in data %}
-                    <tr {% if row[0].tipo == "entrada" %}
-                            class="table-success"
-                        {% elif row[0].tipo == "saida": %}
-                            class="table-danger"
-                        {% elif row[0].tipo == "investimento": %}
-                            class="table-warning"
-                        {% endif %}
-                    >
-                        <td>{{ row[0].id }}</td>
-                        <td>{{ row[0].nome }}</td>
-                        <td>{{ row[0].ativo }}</td>
-                        <td>R${{ row[0].valor }}</td>
-                        <td>{{ row[0].quantidade }}</td>
-                        <td>R${{ row[0].valor * row[0].quantidade }}</td>
-                        <td id="table-desc">{{ row[0].categoria }}</td>
-                        <td>{{ row[0].data }}</td>
-                        <td>
-                            <a href="#" title="vender" onclick="VenderModal('{{row[0].ativo}}', {{row[0].quantidade}}, {{row[0].valor}}, {{row[0].id}});"><i class="fa-solid fa-money-bill-transfer"></i></a>
-                            <a href="{{ url_for('editar') ~ '?id=' ~ row[0].id }}"><i class="fa-regular fa-pen-to-square"></i></a>
-                            <a href="{{ url_for('deletar') ~ '?id=' ~ row[0].id }}"><i class="fa-solid fa-trash" id=""></i></a>
-                            <i class="fa-solid fa-circle-info" onclick=""></i>
-                        </td>
-                    </tr>
-                {% endfor %}
+            {% if type == 'vendidos' %}
+                <table class="table">
+                    <thead>
+                        <tr class="table-dark">
+                            <th scope="col">ID</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Valor compra</th>
+                            <th scope="col">Data venda</th>
+                            <th scope="col">Valor venda</th>
+                            <th scope="col">Variação</th>
+                            <th scope="col">Quantidade venda</th>
+                            <th scope="col">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in data %}
+                            <tr>
+                                <td>{{ row[0].id }}</td>
+                                <td>{{ row[0].nome }}</td>
+                                <td>{{ row[0].valor_compra }}</td>
+                                <td>{{ row[0].data_venda }}</td>
+                                <td>{{ row[0].valor_venda }}</td>
+                                <td>1%</td>
+                                <td>{{ row[0].quantidade_venda }}</td>
+                                <td>
+                                    <a href="{{ url_for('deletar') ~ '?id=' ~ row[0].id }}"><i class="fa-solid fa-trash" id=""></i></a>
+                                    <i class="fa-solid fa-circle-info" onclick=""></i>
+                                </td>
+                            </tr>
+                        {% endfor %}
+            {% else %}
+                <table class="table">
+                    <thead>
+                        <tr class="table-dark">
+                            <th scope="col">ID</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Ativo</th>
+                            <th scope="col">Preço</th>
+                            <th scope="col">Qtd</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Categoria</th>
+                            <th scope="col">Data compra</th>
+                            <th scope="col">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    
+                    {% for row in data %}
+                        <tr {% if row[0].tipo == "entrada" %}
+                                class="table-success"
+                            {% elif row[0].tipo == "saida": %}
+                                class="table-danger"
+                            {% elif row[0].tipo == "investimento": %}
+                                class="table-warning"
+                            {% endif %}
+                        >
+                            <td>{{ row[0].id }}</td>
+                            <td>{{ row[0].nome }}</td>
+                            <td>{{ row[0].ativo }}</td>
+                            <td>R${{ row[0].valor }}</td>
+                            <td>{{ row[0].quantidade }}</td>
+                            <td>R${{ row[0].valor * row[0].quantidade }}</td>
+                            <td id="table-desc">{{ row[0].categoria }}</td>
+                            <td>{{ row[0].data }}</td>
+                            <td>
+                                <a href="{{ url_for('deletar') ~ '?id=' ~ row[0].id }}"><i class="fa-solid fa-trash" id=""></i></a>
+                                <i class="fa-solid fa-circle-info" onclick=""></i>
+                            </td>
+                        </tr>
+                    {% endfor %}
+            {% endif %}
         {% else %}
         {% if page == "dashboard" %}
         

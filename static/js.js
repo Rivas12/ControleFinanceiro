@@ -1,4 +1,6 @@
 $(document).ready(function(){
+  $('#date1').val('0001-01-01')
+  $('#date2').val(dataAtual)
   $('input').attr('autocomplete', 'off');
   $("#ModalQtd, #ModalPreco").change(function(){
     valor_atual = $("#preco_compra").val()
@@ -78,10 +80,10 @@ function VenderModal(nome, quantidade, preco, id){
   calculo = ((valor_novo - valor_atual) / valor_atual) * 100
   if (calculo < 0){
     $("#resolved-symbol-modalvender").removeClass("fa-up-long");
-    $("#resolved-symbol-modalvender").addClass("fa-down-long text-danger") 
+    $("#resolved-symbol-modalvender").addClass("fa-down-long text-danger"); 
   }else{
     $("#resolved-symbol-modalvender").removeClass("fa-down-long text-danger");
-    $("#resolved-symbol-modalvender").addClass("fa-up-long text-success") 
+    $("#resolved-symbol-modalvender").addClass("fa-up-long text-success"); 
   }
     $("#up").text(calculo.toFixed(2))
 }
