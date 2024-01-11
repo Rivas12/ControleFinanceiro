@@ -42,7 +42,7 @@
 
         {% if page == "investimento" %}
             {% if type == 'vendidos' %}
-                <table class="table">
+                <table class="table table-warning" >
                     <thead>
                         <tr class="table-dark">
                             <th scope="col">ID</th>
@@ -60,13 +60,21 @@
                             <tr>
                                 <td>{{ row[0].id }}</td>
                                 <td>{{ row[0].nome }}</td>
-                                <td>{{ row[0].valor_compra }}</td>
+                                <td id="valor_compra{{ row[0].id }}">R${{ row[0].valor_compra }}</td>
                                 <td>{{ row[0].data_venda }}</td>
-                                <td>{{ row[0].valor_venda }}</td>
-                                <td>1%</td>
+                                <td id="valor_venda{{ row[0].id }}">R${{ row[0].valor_venda }}</td>
+                                <td class="text-success" id="variacao{{ row[0].id }}">
+                                    <script>
+                                        resultado = (({{ row[0].valor_compra }} - {{ row[0].valor_venda }}) / {{ row[0].valor_compra }}) * 100
+                                        $("#variacao{{ row[0].id }}").text(resultado.toFixed(2))
+                                        if(resultado < 0){
+                                            $("#variacao{{ row[0].id }}").addClass("text-danger");
+                                        }
+                                    </script>
+                                </td>
                                 <td>{{ row[0].quantidade_venda }}</td>
                                 <td>
-                                    <a href="{{ url_for('deletar') ~ '?id=' ~ row[0].id }}"><i class="fa-solid fa-trash" id=""></i></a>
+                                    <a href="{{ url_for('deletar') ~ '?id=' ~ row[0].id }}&database=investimento_vendidos"><i class="fa-solid fa-trash" id=""></i></a>
                                     <i class="fa-solid fa-circle-info" onclick=""></i>
                                 </td>
                             </tr>

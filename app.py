@@ -166,7 +166,6 @@ def saida():
 @login_required
 def investimentos():
     type = request.args.get('type')
-    print(type)
     form_modal = {
         'entrada': ModalBoxFormEntrada(),
         'saida': ModalBoxFormSaida(),
@@ -220,7 +219,12 @@ def cadastrar_movimentacao():
 @app.route('/deletar', methods = ['POST', 'GET'])
 @login_required
 def deletar():
-    Movimentacoes.query.filter_by(id_user = current_user.id, id = request.args["id"]).delete()
+    if "database" in request.args:
+        if request.args["database"] == "investimento_vendidos":
+            InvestimentosVendidos.query.filter_by(id_user = current_user.id, id = request.args["id"]).delete()
+    else:
+        Movimentacoes.query.filter_by(id_user = current_user.id, id = request.args["id"]).delete()
+
     db.session.commit()
     return redirect(url_for('dashboard'))
 
@@ -255,8 +259,17 @@ def editar():
 @login_required
 def filtro():
     # Armazenando variáveis no dicionario
-    data_filtro['data_inicio'] = datetime.strptime(request.form.get('data_inicio'), "%Y-%m-%d").strftime("%Y-%m-%d")
-    data_filtro['data_fim'] = datetime.strptime(request.form.get('data_fim'), "%Y-%m-%d").strftime("%Y-%m-%d")
+    if request.form.get('data_inicio') == '':
+        data_filtro['data_inicio'] = '0001-01-01'
+    else:
+        data_filtro['data_inicio'] = datetime.strptime(request.form.get('data_inicio'), "%Y-%m-%d").strftime("%Y-%m-%d")
+
+    if request.form.get('data_fim') == '':
+        data_filtro['data_fim'] = datetime.now().strftime("%Y-%m-%d")
+    else:
+        data_filtro['data_fim'] = datetime.strptime(request.form.get('data_fim'), "%Y-%m-%d").strftime("%Y-%m-%d")
+
+    print(data_filtro)
     return redirect(url_for('dashboard'))
 
 

@@ -1,6 +1,4 @@
 $(document).ready(function(){
-  $('#date1').val('0001-01-01')
-  $('#date2').val(dataAtual)
   $('input').attr('autocomplete', 'off');
   $("#ModalQtd, #ModalPreco").change(function(){
     valor_atual = $("#preco_compra").val()
